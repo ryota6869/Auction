@@ -9,11 +9,11 @@
 <body>
   <p>パスワードを忘れましたか？</p>
   <form method="post">
-    <input type="text" name="name" />
+    <input type="text" name="name" placeholder="ユーザー名を入力" />
     <input type="submit" value="検索" formaction="/forgot/pass">
   </form>
   <div th:if="${findPass}">
-    あなたのパスワードは[[${findPass}]]
+    あなたのパスワードは[[${findPass}]]です
   </div>
 </body>
 
