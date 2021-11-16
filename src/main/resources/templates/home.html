@@ -1,1 +1,17 @@
-Hello Home
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+
+<body>
+  <a href="/logout">ログアウト</a>
+  <p><span sec:authentication="name"></span></p>
+
+
+  <a href="/auction">オークション</a>
+</body>
+
+</html>
