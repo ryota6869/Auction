@@ -14,4 +14,9 @@ public class AuctionController {
   public String home() {
     return "home.html";
   }
+
+  @GetMapping("/auction")
+  public String auction() {
+    return "auction.html";
+  }
 }
