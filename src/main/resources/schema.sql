@@ -1,0 +1,4 @@
+CREATE TABLE USERS(
+  id IDENTITY,
+  name CHAR NOT NULL
+);
