@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Forgot</title>
+</head>
+
+<body>
+  <p>パスワードを忘れましたか？</p>
+  <form method="post">
+    <input type="text" name="name" />
+    <input type="submit" value="検索" formaction="/forgot/pass">
+  </form>
+  <div th:if="${findPass}">
+    あなたのパスワードは[[${findPass}]]
+  </div>
+</body>
+
+</html>
