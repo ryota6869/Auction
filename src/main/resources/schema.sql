@@ -1,4 +1,5 @@
 CREATE TABLE USERS(
   id IDENTITY,
-  name CHAR NOT NULL
+  name CHAR NOT NULL,
+  pass CHAR NOT NULL
 );

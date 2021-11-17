@@ -18,8 +18,10 @@ public class AuctionAuthConfiguration extends WebSecurityConfigurerAdapter {
 
     // 平文のパスワードをエンコーダにかけてハッシュ化し，"user1"と関連付けている．ロール名は"USER"
     // プログラム中に素のパスワードが含まれることになるので望ましくない
-    auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("p@ss")).roles("USER");
-
+    auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("p@ss1")).roles("USER");
+    auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("p@ss2")).roles("USER");
+    auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder().encode("p@ss3")).roles("USER");
+    auth.inMemoryAuthentication().withUser("user4").password(passwordEncoder().encode("p@ss4")).roles("USER");
   }
 
   @Bean
