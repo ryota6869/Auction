@@ -22,6 +22,7 @@ public class AuctionAuthConfiguration extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("p@ss2")).roles("USER");
     auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder().encode("p@ss3")).roles("USER");
     auth.inMemoryAuthentication().withUser("user4").password(passwordEncoder().encode("p@ss4")).roles("USER");
+    auth.inMemoryAuthentication().withUser("teacher").password(passwordEncoder().encode("oit")).roles("USER");
   }
 
   @Bean
