@@ -3,3 +3,16 @@ CREATE TABLE USERS(
   name CHAR NOT NULL,
   pass CHAR NOT NULL
 );
+
+CREATE TABLE AUCTION(
+  id IDENTITY,
+  itemId INT NOT NULL,
+  sellerId INT NOT NULL,
+  maxBid INT,
+  date DATE NOT NULL
+);
+
+CREATE TABLE ITEMS(
+  id IDENTITY,
+  name CHAR NOT NULL
+);
