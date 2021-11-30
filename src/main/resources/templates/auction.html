@@ -1,1 +1,36 @@
-hello auction
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Auction</title>
+</head>
+
+<body>
+  <a href="/home">もどる</a>
+  <div>
+    <table border="1">
+      <thead>
+        <th>ID</th>
+        <th>アイテム名</th>
+        <th>出品者</th>
+        <th>最高入札額</th>
+        <th>入札期限</th>
+      </thead>
+      <tbody>
+        <span th:if="${auctionInfos}">
+          <tr th:each="info, stat:${auctionInfos}">
+            <td>[[${info.id}]]</td>
+            <td>[[${info.itemName}]]</td>
+            <td>[[${info.sellerName}]]</td>
+            <td>[[${info.maxBid}]]</td>
+            <td>[[${info.date}]]</td>
+          </tr>
+        </span>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>
