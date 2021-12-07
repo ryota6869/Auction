@@ -46,4 +46,12 @@ public class AuctionController {
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";
   }
+
+  @PostMapping("/auction/bid")
+  public String bid(ModelMap model) {
+    ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
+
+    model.addAttribute("auctionInfos", auctionInfos);
+    return "auction.html";
+  }
 }
