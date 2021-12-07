@@ -29,6 +29,7 @@
             <td>
               <form method="post">
                 <input type="number" name="bid" />
+                <input type="hidden" name="id" th:value="${info.id}">
                 <input type="submit" value="入札" formaction="/auction/bid">
               </form>
             </td>

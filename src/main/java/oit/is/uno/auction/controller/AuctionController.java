@@ -48,9 +48,12 @@ public class AuctionController {
   }
 
   @PostMapping("/auction/bid")
-  public String bid(ModelMap model) {
+  public String bid(@RequestParam Integer bid, @RequestParam Integer id, ModelMap model) {
+    AuctionInfo newInfo = aMapper.selectById(id);
+    if (newInfo.getMaxBid() < bid) {
+      aMapper.updateMaxbidById(bid, id);
+    }
     ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
-
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";
   }
