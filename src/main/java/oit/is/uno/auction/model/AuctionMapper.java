@@ -2,6 +2,7 @@ package oit.is.uno.auction.model;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -16,4 +17,7 @@ public interface AuctionMapper {
 
   @Update("update auction set maxbid =#{bid} where id=#{id}")
   void updateMaxbidById(int bid, int id);
+
+  @Delete("delete from auction where id=#{id}")
+  void deleteById(int id);
 }
