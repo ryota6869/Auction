@@ -9,10 +9,17 @@ CREATE TABLE AUCTION(
   itemId INT NOT NULL,
   sellerId INT NOT NULL,
   maxBid INT,
-  date DATE NOT NULL
+  date DATE NOT NULL,
+  bidderId INT
 );
 
 CREATE TABLE ITEMS(
   id IDENTITY,
   name CHAR NOT NULL
+);
+
+CREATE TABLE AWARDS(
+  id IDENTITY,
+  bidderId INT NOT NULL,
+  itemId INT NOT NULL
 );

@@ -7,4 +7,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UsersMapper {
   @Select("select pass from users where name = '${name}'")
   String selectPassByName(String name);
+
+  @Select("select id from users where name = #{name}")
+  int selectIdByName(String name);
 }

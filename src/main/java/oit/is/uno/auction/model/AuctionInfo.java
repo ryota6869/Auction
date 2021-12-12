@@ -6,6 +6,7 @@ public class AuctionInfo {
   String date;
   String itemName;
   String sellerName;
+  int bidderId;
 
   public int getId() {
     return id;
@@ -47,4 +48,11 @@ public class AuctionInfo {
     this.sellerName = sellerName;
   }
 
+  public int getBidderId() {
+    return bidderId;
+  }
+
+  public void setBidderId(int bidderId) {
+    this.bidderId = bidderId;
+  }
 }
