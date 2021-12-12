@@ -2,7 +2,8 @@ package oit.is.uno.auction.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,23 +46,20 @@ public class AuctionController {
   @GetMapping("/auction")
   public String auction(ModelMap model) {
     ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
-    model.addAttribute("auctionInfos", auctionInfos);
 
-    Date today = new Date();
+    Date today = new Date(System.currentTimeMillis());
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String date = dateFormat.format(today);
 
+    Date sqlToday = Date.valueOf(date);
     for (AuctionInfo aInfo : auctionInfos) {
-      if (aInfo.getDate().equals(date)) {
+      Date sqlDate = Date.valueOf(aInfo.getDate());
+      if (sqlDate.before(sqlToday) || sqlToday.compareTo(sqlDate) == 0) {
         aMapper.deleteById(aInfo.getId());
-      } else if (Integer.parseInt(aInfo.getDate().substring(0, 3)) <= Integer.parseInt(date.substring(0, 3))) {
-        if (Integer.parseInt(aInfo.getDate().substring(5, 6)) <= Integer.parseInt(date.substring(5, 6))) {
-          if (Integer.parseInt(aInfo.getDate().substring(8)) <= Integer.parseInt(date.substring(8))) {
-            aMapper.deleteById(aInfo.getId());
-          }
-        }
       }
     }
+
+    model.addAttribute("auctionInfos", auctionInfos);
 
     return "auction.html";
   }
