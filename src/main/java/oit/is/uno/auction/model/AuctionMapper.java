@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface AuctionMapper {
-  @Select("select auction.id, auction.maxbid, auction.date, items.name itemName, users.name sellerName from auction, items, users where auction.itemid=items.id and auction.sellerid=users.id")
+  @Select("select auction.id, auction.maxbid, auction.date, items.name itemName, users.name sellerName, auction.bidderid from auction, items, users where auction.itemid=items.id and auction.sellerid=users.id")
   ArrayList<AuctionInfo> selectAuctionInfos();
 
   @Select("select auction.id, auction.maxbid, auction.date, items.name itemName, users.name sellerName from auction, items, users where auction.itemid=items.id and auction.sellerid=users.id and auction.id=#{id}")
@@ -17,6 +17,9 @@ public interface AuctionMapper {
 
   @Update("update auction set maxbid =#{bid} where id=#{id}")
   void updateMaxbidById(int bid, int id);
+
+  @Update("update auction set bidderid =#{userId}")
+  void updateUserIdById(int userId);
 
   @Delete("delete from auction where id=#{id}")
   void deleteById(int id);

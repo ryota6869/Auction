@@ -2,6 +2,7 @@ package oit.is.uno.auction.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.security.Principal;
 //import java.util.Date;
 import java.sql.Date;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import oit.is.uno.auction.model.UsersMapper;
 import oit.is.uno.auction.model.AuctionMapper;
+import oit.is.uno.auction.model.AwardsMapper;
+import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
 
 @Controller
@@ -24,6 +27,12 @@ public class AuctionController {
 
   @Autowired
   AuctionMapper aMapper;
+
+  @Autowired
+  ItemMapper iMapper;
+
+  @Autowired
+  AwardsMapper awMapper;
 
   @GetMapping("/home")
   public String home() {
@@ -44,7 +53,7 @@ public class AuctionController {
   }
 
   @GetMapping("/auction")
-  public String auction(ModelMap model) {
+  public String auction(ModelMap model, Principal prin) {
     ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
 
     Date today = new Date(System.currentTimeMillis());
@@ -55,20 +64,30 @@ public class AuctionController {
     for (AuctionInfo aInfo : auctionInfos) {
       Date sqlDate = Date.valueOf(aInfo.getDate());
       if (sqlDate.before(sqlToday) || sqlToday.compareTo(sqlDate) == 0) {
+        int itemId = iMapper.selectItemIdByName(aInfo.getItemName());
+        if (aInfo.getBidderId() != 0) {
+          awMapper.insertAward(aInfo.getBidderId(), itemId);
+        }
         aMapper.deleteById(aInfo.getId());
       }
     }
 
+    int userId = uMapper.selectIdByName(prin.getName());
+
+    auctionInfos = aMapper.selectAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
+    model.addAttribute("userId", userId);
 
     return "auction.html";
   }
 
   @PostMapping("/auction/bid")
-  public String bid(@RequestParam Integer bid, @RequestParam Integer id, ModelMap model) {
-    AuctionInfo newInfo = aMapper.selectById(id);
+  public String bid(@RequestParam Integer bid, @RequestParam Integer auctionId, @RequestParam Integer userId,
+      ModelMap model) {
+    AuctionInfo newInfo = aMapper.selectById(auctionId);
     if (newInfo.getMaxBid() < bid) {
-      aMapper.updateMaxbidById(bid, id);
+      aMapper.updateMaxbidById(bid, auctionId);
+      aMapper.updateUserIdById(userId);
     }
     ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
