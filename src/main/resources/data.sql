@@ -7,3 +7,5 @@ INSERT INTO ITEMS (name) VALUES ('みかん');
 INSERT INTO ITEMS (name) VALUES ('ぶどう');
 INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (1, 1, NULL, '2021-12-01');
 INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (2, 3, NULL, '2021-11-30');
+INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (2, 3, NULL, '2021-12-12');
+INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (2, 3, NULL, '2021-12-13');

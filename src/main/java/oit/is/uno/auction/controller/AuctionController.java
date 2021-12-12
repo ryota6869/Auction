@@ -1,6 +1,9 @@
 package oit.is.uno.auction.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+//import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +46,21 @@ public class AuctionController {
   @GetMapping("/auction")
   public String auction(ModelMap model) {
     ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
+
+    Date today = new Date(System.currentTimeMillis());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = dateFormat.format(today);
+
+    Date sqlToday = Date.valueOf(date);
+    for (AuctionInfo aInfo : auctionInfos) {
+      Date sqlDate = Date.valueOf(aInfo.getDate());
+      if (sqlDate.before(sqlToday) || sqlToday.compareTo(sqlDate) == 0) {
+        aMapper.deleteById(aInfo.getId());
+      }
+    }
+
     model.addAttribute("auctionInfos", auctionInfos);
+
     return "auction.html";
   }
 
