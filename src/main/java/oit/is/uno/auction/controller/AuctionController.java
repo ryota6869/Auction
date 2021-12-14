@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import oit.is.uno.auction.model.UsersMapper;
+import oit.is.uno.auction.service.AsyncAuctionService;
 import oit.is.uno.auction.model.AuctionMapper;
 import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.ItemMapper;
@@ -33,6 +34,9 @@ public class AuctionController {
 
   @Autowired
   AwardsMapper awMapper;
+
+  @Autowired
+  AsyncAuctionService aService;
 
   @GetMapping("/home")
   public String home() {
@@ -54,7 +58,7 @@ public class AuctionController {
 
   @GetMapping("/auction")
   public String auction(ModelMap model, Principal prin) {
-    ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
+    ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
 
     Date today = new Date(System.currentTimeMillis());
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -68,13 +72,13 @@ public class AuctionController {
         if (aInfo.getBidderId() != 0) {
           awMapper.insertAward(aInfo.getBidderId(), itemId);
         }
-        aMapper.deleteById(aInfo.getId());
+        aService.syncItemSold(aInfo.getId());
       }
     }
 
     int userId = uMapper.selectIdByName(prin.getName());
 
-    auctionInfos = aMapper.selectAuctionInfos();
+    auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     model.addAttribute("userId", userId);
 
@@ -83,13 +87,21 @@ public class AuctionController {
 
   @PostMapping("/auction/bid")
   public String bid(@RequestParam Integer bid, @RequestParam Integer auctionId, @RequestParam Integer userId,
-      ModelMap model) {
+      @RequestParam String role, ModelMap model) {
     AuctionInfo newInfo = aMapper.selectById(auctionId);
     if (newInfo.getMaxBid() < bid) {
-      aMapper.updateMaxbidById(bid, auctionId);
-      aMapper.updateUserIdById(userId);
+      aService.syncChangeWinner(auctionId, bid, userId);
     }
-    ArrayList<AuctionInfo> auctionInfos = aMapper.selectAuctionInfos();
+
+    // Debug: teacherで即時に落札するための処理（落札処理の確認）
+    if (role.equals("admin")) {
+      int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
+      awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
+      aService.syncItemSold(newInfo.getId());
+    }
+    // ここまで
+
+    ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";
   }
