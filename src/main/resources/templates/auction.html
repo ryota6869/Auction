@@ -18,7 +18,7 @@
         <th>入札期限</th>
         <th>入札</th>
       </thead>
-      <tbody>
+      <tbody sec:authorize="hasRole('ROLE_USER')">
         <span th:if="${auctionInfos}">
           <tr th:each="info, stat:${auctionInfos}">
             <td>[[${info.id}]]</td>
@@ -31,6 +31,27 @@
                 <input type="number" name="bid" />
                 <input type="hidden" name="auctionId" th:value="${info.id}">
                 <input type="hidden" name="userId" th:value="${userId}">
+                <input type="hidden" name="role" th:value="user">
+                <input type="submit" value="入札" formaction="/auction/bid">
+              </form>
+            </td>
+          </tr>
+        </span>
+      </tbody>
+      <tbody sec:authorize="hasRole('ROLE_ADMIN')">
+        <span th:if="${auctionInfos}">
+          <tr th:each="info, stat:${auctionInfos}">
+            <td>[[${info.id}]]</td>
+            <td>[[${info.itemName}]]</td>
+            <td>[[${info.sellerName}]]</td>
+            <td>[[${info.maxBid}]]</td>
+            <td>[[${info.date}]]</td>
+            <td>
+              <form method="post">
+                <input type="number" name="bid" />
+                <input type="hidden" name="auctionId" th:value="${info.id}">
+                <input type="hidden" name="userId" th:value="${userId}">
+                <input type="hidden" name="role" th:value="admin">
                 <input type="submit" value="入札" formaction="/auction/bid">
               </form>
             </td>
