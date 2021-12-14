@@ -19,6 +19,7 @@ import oit.is.uno.auction.model.AuctionMapper;
 import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Controller
 public class AuctionController {
@@ -104,5 +105,12 @@ public class AuctionController {
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";
+  }
+
+  @GetMapping("auction/async")
+  public SseEmitter asyncProcess() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.aService.asyncShowAuctionInfos(sseEmitter);
+    return sseEmitter;
   }
 }
