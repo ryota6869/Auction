@@ -86,20 +86,22 @@ public class AuctionController {
     return "auction.html";
   }
 
-  @PostMapping("/auction/bid")
-  public String bid(@RequestParam Integer bid, @RequestParam Integer auctionId, @RequestParam Integer userId,
+  @GetMapping("/auction/bid")
+  public String bid(@RequestParam Integer bid, @RequestParam String auctionId, @RequestParam String userId,
       @RequestParam String role, ModelMap model) {
-    AuctionInfo newInfo = aMapper.selectById(auctionId);
-    if (newInfo.getMaxBid() < bid) {
-      aService.syncChangeWinner(auctionId, bid, userId);
-    }
+    System.out.println("auctionId :" + auctionId);
+    System.out.println("userId :" + userId);
+    // //AuctionInfo newInfo = aMapper.selectById(auctionId);
+    // if (newInfo.getMaxBid() < bid) {
+    // //aService.syncChangeWinner(auctionId, bid, userId);
+    // }
 
-    // Debug: teacherで即時に落札するための処理（落札処理の確認）
-    if (role.equals("admin")) {
-      int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
-      awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
-      aService.syncItemSold(newInfo.getId());
-    }
+    // // Debug: teacherで即時に落札するための処理（落札処理の確認）
+    // if (role.equals("admin")) {
+    // int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
+    // awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
+    // aService.syncItemSold(newInfo.getId());
+    // }
     // ここまで
 
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
@@ -108,7 +110,9 @@ public class AuctionController {
   }
 
   @GetMapping("auction/async")
-  public SseEmitter asyncProcess() {
+  public SseEmitter asyncProcess(ModelMap model, Principal prin) {
+    int userId = uMapper.selectIdByName(prin.getName());
+    model.addAttribute("userId", userId);
     final SseEmitter sseEmitter = new SseEmitter();
     this.aService.asyncShowAuctionInfos(sseEmitter);
     return sseEmitter;
