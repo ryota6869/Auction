@@ -4,6 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Auction</title>
+  <script th:inline="javascript">
+    window.onload = function () {
+      var sse = new EventSource('/auction/bid/async');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage")
+        console.log(event.data);
+        var auctionInfos = JSON.parse(event.data);
+        var auctions_table = "";
+        for (var i = 0; i < auctionInfos.length; i++) {
+          var bgn_tr = "<tr>";
+          var end_tr = "</tr>";
+          var idx = "<td>" + auctionInfos[i].id + "</td>";
+          var item_name = "<td>" + auctionInfos[i].itemName + "</td>";
+          var sellerName = "<td>" + auctionInfos[i].sellerName + "</td>";
+          var maxBid = "<td>" + auctionInfos[i].maxBid + "</td>";
+          var date = "<td>" + auctionInfos[i].date + "</td>";
+          var f_proc = "<td><a href='/auction/bid?auctionId=" + auctionInfos[i].id + "'>入札</a></td>";
+          auctions_table = auctions_table + bgn_tr + idx + item_name + sellerName + maxBid + date + f_proc + end_tr;
+        }
+        console.log(auctions_table);
+        var tbody = document.getElementById("auctions_list_user");
+        tbody.innerHTML = auctions_table;
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -18,7 +43,7 @@
         <th>入札期限</th>
         <th>入札</th>
       </thead>
-      <tbody sec:authorize="hasRole('ROLE_USER')">
+      <tbody id="auctions_list_user" sec:authorize="hasRole('ROLE_USER')">
         <span th:if="${auctionInfos}">
           <tr th:each="info, stat:${auctionInfos}">
             <td>[[${info.id}]]</td>
@@ -27,13 +52,7 @@
             <td>[[${info.maxBid}]]</td>
             <td>[[${info.date}]]</td>
             <td>
-              <form method="post">
-                <input type="number" name="bid" />
-                <input type="hidden" name="auctionId" th:value="${info.id}">
-                <input type="hidden" name="userId" th:value="${userId}">
-                <input type="hidden" name="role" th:value="user">
-                <input type="submit" value="入札" formaction="/auction/bid">
-              </form>
+              <a th:href="@{/auction/bid(auctionId=${info.id})}">入札</a>
             </td>
           </tr>
         </span>

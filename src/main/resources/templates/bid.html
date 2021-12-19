@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bid</title>
+</head>
+<body>
+  <a href="/auction">もどる</a>
+  <form action="/auction/bid/insert" method="post">
+    <input type="number" name="bid" />
+    <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
+    <input type="submit" value="入札">
+  </form>
+</body>
+</html>

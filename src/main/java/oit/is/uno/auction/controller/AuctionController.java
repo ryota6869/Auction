@@ -19,6 +19,7 @@ import oit.is.uno.auction.model.AuctionMapper;
 import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Controller
 public class AuctionController {
@@ -76,33 +77,47 @@ public class AuctionController {
       }
     }
 
-    int userId = uMapper.selectIdByName(prin.getName());
-
     auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
-    model.addAttribute("userId", userId);
 
     return "auction.html";
   }
 
-  @PostMapping("/auction/bid")
-  public String bid(@RequestParam Integer bid, @RequestParam Integer auctionId, @RequestParam Integer userId,
-      @RequestParam String role, ModelMap model) {
+  @GetMapping("/auction/bid")
+  public String bid(@RequestParam Integer auctionId, ModelMap model, Principal prin) {
+
+    AuctionInfo auctionInfo = aMapper.selectById(auctionId);
+
+    // // Debug: teacherで即時に落札するための処理（落札処理の確認）
+    // if (role.equals("admin")) {
+    // int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
+    // awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
+    // aService.syncItemSold(newInfo.getId());
+    // }
+    // ここまで
+
+    model.addAttribute("auctionInfo", auctionInfo);
+    return "bid.html";
+  }
+
+  @PostMapping("/auction/bid/insert")
+  public String insert(@RequestParam Integer bid, @RequestParam Integer auctionId, ModelMap model, Principal prin) {
+    int userId = uMapper.selectIdByName(prin.getName());
+    model.addAttribute("userId", userId);
     AuctionInfo newInfo = aMapper.selectById(auctionId);
+
     if (newInfo.getMaxBid() < bid) {
       aService.syncChangeWinner(auctionId, bid, userId);
     }
+    newInfo = aMapper.selectById(auctionId);
+    model.addAttribute("auctionInfo", newInfo);
+    return "bid.html";
+  }
 
-    // Debug: teacherで即時に落札するための処理（落札処理の確認）
-    if (role.equals("admin")) {
-      int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
-      awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
-      aService.syncItemSold(newInfo.getId());
-    }
-    // ここまで
-
-    ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
-    model.addAttribute("auctionInfos", auctionInfos);
-    return "auction.html";
+  @GetMapping("auction/bid/async")
+  public SseEmitter asyncProcess() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.aService.asyncShowAuctionInfos(sseEmitter);
+    return sseEmitter;
   }
 }

@@ -6,6 +6,6 @@ INSERT INTO USERS (name,pass) VALUES ('teacher','oit');
 INSERT INTO ITEMS (name) VALUES ('りんご');
 INSERT INTO ITEMS (name) VALUES ('みかん');
 INSERT INTO ITEMS (name) VALUES ('ぶどう');
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 3, 1122, '2021-12-12',1);
+INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 3, 1122, '2022-12-12',1);
 INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (3, 1, NULL, '2021-12-13');
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (3, 1, NULL, '2022-12-13');
+INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (3, 1, NULL, '2022-12-13',2);
