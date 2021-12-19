@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>History</title>
+</head>
+
+<body>
+  <a href="/home">戻る</a>
+  <h1>購入履歴</h1>
+  <table border="1">
+    <thead>
+      <th>id</th>
+      <th>item name</th>
+    </thead>
+    <tbody th:if="${awards}">
+      <tr th:each="aw,stat:${awards}">
+        <td>[[${aw.id}]]</td>
+        <td>[[${aw.item}]]</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+
+</html>
