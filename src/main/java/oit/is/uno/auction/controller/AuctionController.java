@@ -77,24 +77,16 @@ public class AuctionController {
       }
     }
 
-    int userId = uMapper.selectIdByName(prin.getName());
-
     auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
-    model.addAttribute("userId", userId);
 
     return "auction.html";
   }
 
   @GetMapping("/auction/bid")
-  public String bid(@RequestParam Integer bid, @RequestParam String auctionId, @RequestParam String userId,
-      @RequestParam String role, ModelMap model) {
-    System.out.println("auctionId :" + auctionId);
-    System.out.println("userId :" + userId);
-    // //AuctionInfo newInfo = aMapper.selectById(auctionId);
-    // if (newInfo.getMaxBid() < bid) {
-    // //aService.syncChangeWinner(auctionId, bid, userId);
-    // }
+  public String bid(@RequestParam Integer auctionId, ModelMap model, Principal prin) {
+
+    AuctionInfo auctionInfo = aMapper.selectById(auctionId);
 
     // // Debug: teacherで即時に落札するための処理（落札処理の確認）
     // if (role.equals("admin")) {
@@ -104,15 +96,26 @@ public class AuctionController {
     // }
     // ここまで
 
-    ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
-    model.addAttribute("auctionInfos", auctionInfos);
-    return "auction.html";
+    model.addAttribute("auctionInfo", auctionInfo);
+    return "bid.html";
   }
 
-  @GetMapping("auction/async")
-  public SseEmitter asyncProcess(ModelMap model, Principal prin) {
+  @PostMapping("/auction/bid/insert")
+  public String insert(@RequestParam Integer bid, @RequestParam Integer auctionId, ModelMap model, Principal prin) {
     int userId = uMapper.selectIdByName(prin.getName());
     model.addAttribute("userId", userId);
+    AuctionInfo newInfo = aMapper.selectById(auctionId);
+
+    if (newInfo.getMaxBid() < bid) {
+      aService.syncChangeWinner(auctionId, bid, userId);
+    }
+    newInfo = aMapper.selectById(auctionId);
+    model.addAttribute("auctionInfo", newInfo);
+    return "bid.html";
+  }
+
+  @GetMapping("auction/bid/async")
+  public SseEmitter asyncProcess() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.aService.asyncShowAuctionInfos(sseEmitter);
     return sseEmitter;

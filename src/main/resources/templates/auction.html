@@ -4,15 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Auction</title>
-  <script th:inline="javascript" th:if=${userId}>
+  <script th:inline="javascript">
     window.onload = function () {
-      var sse = new EventSource('/auction/async');
+      var sse = new EventSource('/auction/bid/async');
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
         console.log(event.data);
-        var auctionInfos = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        var auctionInfos = JSON.parse(event.data);
         var auctions_table = "";
-        // DBに残っているフルーツのリストがJSONオブジェクトとして得られるので，htmlを作成し，tbodyの中身毎入れ替える
         for (var i = 0; i < auctionInfos.length; i++) {
           var bgn_tr = "<tr>";
           var end_tr = "</tr>";
@@ -21,20 +20,7 @@
           var sellerName = "<td>" + auctionInfos[i].sellerName + "</td>";
           var maxBid = "<td>" + auctionInfos[i].maxBid + "</td>";
           var date = "<td>" + auctionInfos[i].date + "</td>";
-          var role = "user";
-          // var f_proc = "<td>"
-          //   + "<form action='/auction/bid' method='post'>"
-          //   + "<input type = 'number' name = 'bid' />"
-          //   + "<input type='hidden' name='auctionId' th:value="
-          //   + auctionInfos[i].id
-          //   + ">"
-          //   + "<input type='hidden' name='userId' th:value="
-          //   +
-          //   + ">"
-          //   + "<input type='hidden' name='role' th:value='" + role + "'>"
-          //   + "<input type='submit' value='入札'></form>"
-          //   + "</td>"
-          var f_proc = "<a href='/auction/bid?bid = 10&auctionId =" + auctionInfos[i].id + "userId = " + [[${ userId }]] + "role = user'>入札</a>";
+          var f_proc = "<td><a href='/auction/bid?auctionId=" + auctionInfos[i].id + "'>入札</a></td>";
           auctions_table = auctions_table + bgn_tr + idx + item_name + sellerName + maxBid + date + f_proc + end_tr;
         }
         console.log(auctions_table);
@@ -66,7 +52,7 @@
             <td>[[${info.maxBid}]]</td>
             <td>[[${info.date}]]</td>
             <td>
-              <a th:href="@{/auction/bid(bid=10,auctionId=${info.id},userId=${userId}),role=user}">入札</a>
+              <a th:href="@{/auction/bid(auctionId=${info.id})}">入札</a>
             </td>
           </tr>
         </span>

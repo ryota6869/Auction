@@ -48,9 +48,7 @@ public class AsyncAuctionService {
           TimeUnit.MILLISECONDS.sleep(500);
           continue;
         }
-
         ArrayList<AuctionInfo> aInfos = this.syncShowAuctionInfos();
-        System.out.println(aInfos.get(0).getId() + " " + dbUpdated);
         emitter.send(aInfos);
         TimeUnit.MILLISECONDS.sleep(1000);
         dbUpdated = false;
