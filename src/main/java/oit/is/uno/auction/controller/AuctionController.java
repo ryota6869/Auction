@@ -20,6 +20,7 @@ import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import oit.is.uno.auction.model.Awards;
 
 @Controller
 public class AuctionController {
@@ -124,5 +125,13 @@ public class AuctionController {
     final SseEmitter sseEmitter = new SseEmitter();
     this.aService.asyncShowAuctionInfos(sseEmitter);
     return sseEmitter;
+  }
+
+  @GetMapping("history")
+  public String history(ModelMap model, Principal prin) {
+    int bidderId = uMapper.selectIdByName(prin.getName());
+    ArrayList<Awards> awards = awMapper.selectAwardsByBidderId(bidderId);
+    model.addAttribute("awards", awards);
+    return "history.html";
   }
 }
