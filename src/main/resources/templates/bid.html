@@ -10,8 +10,8 @@
   <a href="/auction">もどる</a>
   <h1>Auction [[${auctionInfo.id}]]</h1>
   <h2>[[${auctionInfo.itemName}]]</h2>
-  <p>入札期限:[[${auctionInfo.date}]]</p>
-  <p>最高入札額:[[${auctionInfo.maxBid}]]</p>
+  <p>入札期限::[[${auctionInfo.date}]]</p>
+  <p>最高入札額::[[${auctionInfo.maxBid}]]</p>
 
   <div sec:authorize="hasRole('ROLE_USER')">
     <form action="/auction/bid/insert" method="post">
