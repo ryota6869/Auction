@@ -5,12 +5,31 @@
   <meta charset="UTF-8">
   <title>Bid</title>
 </head>
+
 <body>
   <a href="/auction">もどる</a>
-  <form action="/auction/bid/insert" method="post">
-    <input type="number" name="bid" />
-    <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
-    <input type="submit" value="入札">
-  </form>
+  <h1>Auction [[${auctionInfo.id}]]</h1>
+  <h2>[[${auctionInfo.itemName}]]</h2>
+  <p>入札期限::[[${auctionInfo.date}]]</p>
+  <p>最高入札額::[[${auctionInfo.maxBid}]]</p>
+
+  <div sec:authorize="hasRole('ROLE_USER')">
+    <form action="/auction/bid/insert" method="post">
+      <input type="number" name="bid" />
+      <input type="hidden" name="role" th:value="user" />
+      <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
+      <input type="submit" value="入札">
+    </form>
+  </div>
+
+  <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <form action="/auction/bid/insert" method="post">
+      <input type="number" name="bid" />
+      <input type="hidden" name="role" th:value="admin" />
+      <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
+      <input type="submit" value="入札">
+    </form>
+  </div>
 </body>
+
 </html>
