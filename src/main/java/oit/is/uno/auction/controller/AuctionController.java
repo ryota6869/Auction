@@ -21,6 +21,7 @@ import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.uno.auction.model.Awards;
+import oit.is.uno.auction.model.Items;
 
 @Controller
 public class AuctionController {
@@ -136,9 +137,16 @@ public class AuctionController {
   }
 
   @GetMapping("auction/sell")
-  public String sell(ModelMap model, Principal prin) {
+  public String sell(ModelMap model) {
+    ArrayList<Items> items = iMapper.selectItems();
+    model.addAttribute("items", items);
+    return "sell.html";
+  }
+
+  @GetMapping("auction/selling")
+  public String selling(ModelMap model, Principal prin, @RequestParam Integer itemId) {
     int sellerId = uMapper.selectIdByName(prin.getName());
-    aService.syncSellItem(sellerId);
+    aService.syncSellItem(sellerId, itemId);
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";

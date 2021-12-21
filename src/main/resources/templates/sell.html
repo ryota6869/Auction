@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sell</title>
+</head>
+
+<body>
+  <a href="/auction">キャンセル</a>
+  <br>
+  <div th:if="${items}">
+    <span th:each="item, stat:${items}">
+      <a th:href="@{/auction/selling(itemId=${item.id})}">[[${item.name}]]</a>
+    </span>
+  </div>
+</body>
+
+</html>
