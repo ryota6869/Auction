@@ -12,10 +12,16 @@
   <div th:if="${items}">
     <form method="post" action="/auction/selling">
       <label for="due">入札期限</label>
-      <input type="date" id="due" name="dueDate">
+      <input type="date" id="due" name="dueDate" th:value="${today}">
       <p>出品する商品</p>
       <div th:each="item, stat:${items}">
-        <input type="radio" th:id="${item.id}" name="itemId" th:value="${item.id}">
+        <span th:if="${item.id == 1}">
+          <input type="radio" th:id="${item.id}" name="itemId" th:value="${item.id}" checked>
+        </span>
+        <span th:if="${item.id != 1}">
+          <input type="radio" th:id="${item.id}" name="itemId" th:value="${item.id}">
+        </span>
+
         <label th:for="${item.id}">[[${item.name}]]</label>
       </div>
       <input type="submit" value="決定">

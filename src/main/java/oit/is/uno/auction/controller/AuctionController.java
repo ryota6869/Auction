@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.uno.auction.model.Awards;
 import oit.is.uno.auction.model.Items;
 
+
 @Controller
 public class AuctionController {
 
@@ -140,6 +141,12 @@ public class AuctionController {
   public String sell(ModelMap model) {
     ArrayList<Items> items = iMapper.selectItems();
     model.addAttribute("items", items);
+    Date today = new Date(System.currentTimeMillis());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = dateFormat.format(today);
+    //calendar.add(Calendar.MONTH, 3);
+    Date sqlToday = Date.valueOf(date);
+    model.addAttribute("today", sqlToday);
     return "sell.html";
   }
 
