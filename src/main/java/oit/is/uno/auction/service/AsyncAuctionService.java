@@ -38,8 +38,8 @@ public class AsyncAuctionService {
     this.dbUpdated = true;
   }
 
-  public void syncSellItem(int sellerId, int itemId) {
-    aMapper.insertInfo(sellerId, itemId);
+  public void syncSellItem(int sellerId, int itemId, String dueDate) {
+    aMapper.insertInfo(sellerId, itemId, dueDate);
     this.dbUpdated = true;
   }
 

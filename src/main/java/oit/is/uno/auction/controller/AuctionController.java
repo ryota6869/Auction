@@ -143,10 +143,10 @@ public class AuctionController {
     return "sell.html";
   }
 
-  @GetMapping("auction/selling")
-  public String selling(ModelMap model, Principal prin, @RequestParam Integer itemId) {
+  @PostMapping("auction/selling")
+  public String selling(ModelMap model, Principal prin, @RequestParam Integer itemId, @RequestParam String dueDate) {
     int sellerId = uMapper.selectIdByName(prin.getName());
-    aService.syncSellItem(sellerId, itemId);
+    aService.syncSellItem(sellerId, itemId, dueDate);
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";
