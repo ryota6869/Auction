@@ -3,6 +3,7 @@ package oit.is.uno.auction.model;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -23,4 +24,7 @@ public interface AuctionMapper {
 
   @Delete("delete from auction where id=#{id}")
   void deleteById(int id);
+
+  @Insert("INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (1, #{sellerId}, NULL, '2022-12-30');")
+  void insertInfo(int sellerId);
 }
