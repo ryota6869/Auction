@@ -25,6 +25,6 @@ public interface AuctionMapper {
   @Delete("delete from auction where id=#{id}")
   void deleteById(int id);
 
-  @Insert("INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (1, #{sellerId}, NULL, '2022-12-30');")
-  void insertInfo(int sellerId);
+  @Insert("INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (#{itemId}, #{sellerId}, NULL, '2022-12-30');")
+  void insertInfo(int sellerId, int itemId);
 }
