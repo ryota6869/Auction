@@ -134,4 +134,14 @@ public class AuctionController {
     model.addAttribute("awards", awards);
     return "history.html";
   }
+
+  @GetMapping("auction/sell")
+  public String sell(ModelMap model, Principal prin) {
+    int sellerId = uMapper.selectIdByName(prin.getName());
+    aService.syncSellItem(sellerId);
+    ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
+    model.addAttribute("auctionInfos", auctionInfos);
+    return "auction.html";
+  }
+
 }

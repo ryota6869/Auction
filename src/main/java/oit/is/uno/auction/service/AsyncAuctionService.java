@@ -38,6 +38,11 @@ public class AsyncAuctionService {
     this.dbUpdated = true;
   }
 
+  public void syncSellItem(int sellerId) {
+    aMapper.insertInfo(sellerId);
+    this.dbUpdated = true;
+  }
+
   @Async
   public void asyncShowAuctionInfos(SseEmitter emitter) {
     dbUpdated = true;
