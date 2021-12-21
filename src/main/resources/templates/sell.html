@@ -10,9 +10,16 @@
   <a href="/auction">キャンセル</a>
   <br>
   <div th:if="${items}">
-    <span th:each="item, stat:${items}">
-      <a th:href="@{/auction/selling(itemId=${item.id})}">[[${item.name}]]</a>
-    </span>
+    <form method="post" action="/auction/selling">
+      <label for="due">入札期限</label>
+      <input type="date" id="due" name="dueDate">
+      <p>出品する商品</p>
+      <div th:each="item, stat:${items}">
+        <input type="radio" th:id="${item.id}" name="itemId" th:value="${item.id}">
+        <label th:for="${item.id}">[[${item.name}]]</label>
+      </div>
+      <input type="submit" value="決定">
+    </form>
   </div>
 </body>
 
