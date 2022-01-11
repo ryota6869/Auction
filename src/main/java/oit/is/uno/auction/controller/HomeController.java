@@ -12,6 +12,8 @@ import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.Awards;
 import java.util.ArrayList;
 import java.security.Principal;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 @Controller
 public class HomeController {
@@ -22,7 +24,26 @@ public class HomeController {
   AwardsMapper awMapper;
 
   @GetMapping("/home")
-  public String home() {
+  public String home(Principal prin, ModelMap model) {
+    String cust = prin.getName();
+    int bonus = 10000;
+
+    Date today = new Date(System.currentTimeMillis());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = dateFormat.format(today);
+
+    if (uMapper.selectLoginByName(cust).equals(date)) {
+      uMapper.updLastLogin(date, cust);
+    } else {
+      model.addAttribute("bonus", bonus);
+      uMapper.updLastLogin(date, cust);
+      int current = uMapper.selectMoneyById(uMapper.selectIdByName(cust));
+      uMapper.updMoney(bonus + current, cust);
+    }
+    int userId = uMapper.selectIdByName(cust);
+    int money = uMapper.selectMoneyById(userId);
+    model.addAttribute("money", money);
+
     return "home.html";
   }
 
