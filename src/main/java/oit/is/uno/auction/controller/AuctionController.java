@@ -73,9 +73,23 @@ public class AuctionController {
   public String bid(@RequestParam Integer auctionId, ModelMap model, Principal prin) {
 
     AuctionInfo auctionInfo = aMapper.selectById(auctionId);
-
+    String userName = prin.getName();
+    if (auctionInfo.getSellerName().equals(userName)) {
+      model.addAttribute("seller", userName);
+    } else {
+      model.addAttribute("bidder", userName);
+    }
     model.addAttribute("auctionInfo", auctionInfo);
     return "bid.html";
+  }
+
+  @GetMapping("/bid/end")
+  public String end(@RequestParam Integer auctionId) {
+    AuctionInfo newInfo = aMapper.selectById(auctionId);
+    int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
+    awMapper.insertAward(newInfo.getBidderId(), itemId);
+    aService.syncItemSold(auctionId);
+    return "auction.html";
   }
 
   @PostMapping("/bid/insert")
@@ -102,6 +116,7 @@ public class AuctionController {
 
     newInfo = aMapper.selectById(auctionId);
     model.addAttribute("auctionInfo", newInfo);
+    model.addAttribute("bidder", prin.getName());
     return "bid.html";
   }
 
