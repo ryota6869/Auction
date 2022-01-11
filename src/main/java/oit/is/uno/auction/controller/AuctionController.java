@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import oit.is.uno.auction.model.UsersMapper;
 import oit.is.uno.auction.service.AsyncAuctionService;
@@ -20,11 +21,11 @@ import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import oit.is.uno.auction.model.Awards;
 import oit.is.uno.auction.model.Items;
 import oit.is.uno.auction.model.DateInit;
 
 @Controller
+@RequestMapping("/auction")
 public class AuctionController {
 
   @Autowired
@@ -42,25 +43,7 @@ public class AuctionController {
   @Autowired
   AsyncAuctionService aService;
 
-  @GetMapping("/home")
-  public String home() {
-    return "home.html";
-  }
-
-  @GetMapping("/forgot")
-  public String forgot() {
-    return "forgot.html";
-  }
-
-  @PostMapping("/forgot/pass")
-  public String forgot(@RequestParam String name, ModelMap model) {
-    String find;
-    find = uMapper.selectPassByName(name);
-    model.addAttribute("findPass", find);
-    return "forgot.html";
-  }
-
-  @GetMapping("/auction")
+  @GetMapping()
   public String auction(ModelMap model, Principal prin) {
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
 
@@ -86,7 +69,7 @@ public class AuctionController {
     return "auction.html";
   }
 
-  @GetMapping("/auction/bid")
+  @GetMapping("/bid")
   public String bid(@RequestParam Integer auctionId, ModelMap model, Principal prin) {
 
     AuctionInfo auctionInfo = aMapper.selectById(auctionId);
@@ -95,7 +78,7 @@ public class AuctionController {
     return "bid.html";
   }
 
-  @PostMapping("/auction/bid/insert")
+  @PostMapping("/bid/insert")
   public String insert(@RequestParam Integer bid, @RequestParam String role, @RequestParam Integer auctionId,
       ModelMap model, Principal prin) {
     int userId = uMapper.selectIdByName(prin.getName());
@@ -122,22 +105,14 @@ public class AuctionController {
     return "bid.html";
   }
 
-  @GetMapping("auction/bid/async")
+  @GetMapping("/bid/async")
   public SseEmitter asyncProcess() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.aService.asyncShowAuctionInfos(sseEmitter);
     return sseEmitter;
   }
 
-  @GetMapping("history")
-  public String history(ModelMap model, Principal prin) {
-    int bidderId = uMapper.selectIdByName(prin.getName());
-    ArrayList<Awards> awards = awMapper.selectAwardsByBidderId(bidderId);
-    model.addAttribute("awards", awards);
-    return "history.html";
-  }
-
-  @GetMapping("auction/sell")
+  @GetMapping("/sell")
   public String sell(ModelMap model) {
     ArrayList<Items> items = iMapper.selectItems();
     model.addAttribute("items", items);
@@ -146,7 +121,7 @@ public class AuctionController {
     return "sell.html";
   }
 
-  @PostMapping("auction/selling")
+  @PostMapping("/selling")
   public String selling(ModelMap model, Principal prin, @RequestParam Integer itemId, @RequestParam String dueDate) {
     int sellerId = uMapper.selectIdByName(prin.getName());
     aService.syncSellItem(sellerId, itemId, dueDate);
