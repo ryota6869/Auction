@@ -1,8 +1,8 @@
-INSERT INTO USERS (name,pass) VALUES ('user1','p@ss1');
-INSERT INTO USERS (name,pass) VALUES ('user2','p@ss2');
-INSERT INTO USERS (name,pass) VALUES ('user3','p@ss3');
-INSERT INTO USERS (name,pass) VALUES ('user4','p@ss4');
-INSERT INTO USERS (name,pass) VALUES ('teacher','oit');
+INSERT INTO USERS (name,money,pass,login) VALUES ('user1',0,'p@ss1', '2000-1-1');
+INSERT INTO USERS (name,money,pass,login) VALUES ('user2',0,'p@ss2', '2000-1-1');
+INSERT INTO USERS (name,money,pass,login) VALUES ('user3',0,'p@ss3', '2000-1-1');
+INSERT INTO USERS (name,money,pass,login) VALUES ('user4',0,'p@ss4', '2000-1-1');
+INSERT INTO USERS (name,money,pass,login) VALUES ('teacher',999999,'oit', '2000-1-1');
 INSERT INTO ITEMS (name) VALUES ('りんご');
 INSERT INTO ITEMS (name) VALUES ('みかん');
 INSERT INTO ITEMS (name) VALUES ('ぶどう');

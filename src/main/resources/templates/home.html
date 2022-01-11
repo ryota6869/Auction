@@ -10,8 +10,10 @@
   <a href="/logout">ログアウト</a>
   <p><span sec:authentication="name"></span></p>
 
+  <div th:if="${bonus}">今日のログインボーナスです！[[${bonus}]]円をもらいました！</div>
+  <p>あなたの所持金は　[[${money}]]</p>
 
-  <a href="/auction">オークション</a>
+  <a href="/auction">オークション</a><br>
 
   <a href="/history">購入履歴</a>
 </body>
