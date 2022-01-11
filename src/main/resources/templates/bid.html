@@ -14,12 +14,17 @@
   <p>最高入札額:[[${auctionInfo.maxBid}]]</p>
 
   <div sec:authorize="hasRole('ROLE_USER')">
-    <form action="/auction/bid/insert" method="post">
-      <input type="number" name="bid" value="0" min="0" />
-      <input type="hidden" name="role" th:value="user" />
-      <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
-      <input type="submit" value="入札">
-    </form>
+    <span th:if="${seller}">
+      <a th:href="@{/auction/bid/end(auctionId=${auctionInfo.id})}">オークションを終了する</a>
+    </span>
+    <span th:if="${bidder}">
+      <form action="/auction/bid/insert" method="post">
+        <input type="number" name="bid" value="0" min="0" />
+        <input type="hidden" name="role" th:value="user" />
+        <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
+        <input type="submit" value="入札">
+      </form>
+    </span>
   </div>
 
   <div sec:authorize="hasRole('ROLE_ADMIN')">
