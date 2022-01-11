@@ -57,7 +57,16 @@ public class AuctionController {
       if (sqlDate.before(sqlToday) || sqlToday.compareTo(sqlDate) == 0) {
         int itemId = iMapper.selectItemIdByName(aInfo.getItemName());
         if (aInfo.getBidderId() != 0) {
-          awMapper.insertAward(aInfo.getBidderId(), itemId);
+          int bidderMoney = uMapper.selectMoneyById(aInfo.getBidderId());
+          int sellerMoney = uMapper.selectMoneyById(uMapper.selectIdByName(aInfo.getSellerName()));
+          if (bidderMoney >= aInfo.getMaxBid()) {
+            awMapper.insertAward(aInfo.getBidderId(), itemId);
+            String name = uMapper.selectNameById(aInfo.getBidderId());
+            int bidderCurrent = bidderMoney - aInfo.getMaxBid();
+            uMapper.updMoney(bidderCurrent, name);
+            int sellerCurrent = sellerMoney + aInfo.getMaxBid();
+            uMapper.updMoney(sellerCurrent, aInfo.getSellerName());
+          }
         }
         aService.syncItemSold(aInfo.getId());
       }

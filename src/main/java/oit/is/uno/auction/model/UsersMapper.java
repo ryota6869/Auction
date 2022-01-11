@@ -12,6 +12,9 @@ public interface UsersMapper {
   @Select("select id from users where name = #{name}")
   int selectIdByName(String name);
 
+  @Select("select name from users where id = #{id}")
+  String selectNameById(int id);
+
   @Select("select login from users where name = #{name}")
   String selectLoginByName(String name);
 
