@@ -22,7 +22,7 @@ import oit.is.uno.auction.model.AuctionInfo;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.uno.auction.model.Awards;
 import oit.is.uno.auction.model.Items;
-
+import oit.is.uno.auction.model.DateInit;
 
 @Controller
 public class AuctionController {
@@ -141,12 +141,8 @@ public class AuctionController {
   public String sell(ModelMap model) {
     ArrayList<Items> items = iMapper.selectItems();
     model.addAttribute("items", items);
-    Date today = new Date(System.currentTimeMillis());
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    String date = dateFormat.format(today);
-    //calendar.add(Calendar.MONTH, 3);
-    Date sqlToday = Date.valueOf(date);
-    model.addAttribute("today", sqlToday);
+    DateInit date = new DateInit();
+    model.addAttribute("today", date.getTomorrowDate());
     return "sell.html";
   }
 
