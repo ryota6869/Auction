@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import oit.is.uno.auction.model.UsersMapper;
 import oit.is.uno.auction.model.AwardsMapper;
 import oit.is.uno.auction.model.Awards;
+import oit.is.uno.auction.model.ResultMapper;
+import oit.is.uno.auction.model.Results;
 import java.util.ArrayList;
 import java.security.Principal;
 import java.sql.Date;
@@ -22,6 +24,9 @@ public class HomeController {
 
   @Autowired
   AwardsMapper awMapper;
+
+  @Autowired
+  ResultMapper rMapper;
 
   @GetMapping("/home")
   public String home(Principal prin, ModelMap model) {
@@ -66,5 +71,13 @@ public class HomeController {
     ArrayList<Awards> awards = awMapper.selectAwardsByBidderId(bidderId);
     model.addAttribute("awards", awards);
     return "history.html";
+  }
+
+  @GetMapping("result")
+  public String result(ModelMap model, Principal prin) {
+    int sellerId = uMapper.selectIdByName(prin.getName());
+    ArrayList<Results> results = rMapper.selectResultsBySellerId(sellerId);
+    model.addAttribute("results", results);
+    return "result.html";
   }
 }

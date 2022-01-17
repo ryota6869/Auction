@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Results</title>
+</head>
+
+<body>
+  <a href="/home">戻る</a>
+  <h1>オークション結果</h1>
+  <table border="1">
+    <thead>
+      <th>ID</th>
+      <th>商品名</th>
+      <th>結果</th>
+      <th>日付</th>
+    </thead>
+    <tbody th:if="${results}">
+      <tr th:each="res,stat:${results}">
+        <td th:text="${stat.count}"></td>
+        <td>[[${res.item}]]</td>
+        <td th:if="${res.result} == 成功">
+          [[${res.result}]]
+        </td>
+        <td th:if="${res.result} == 失敗" bgcolor="#ff0000">
+          [[${res.result}]]
+        </td>
+        <td>[[${res.date}]]</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+
+</html>
