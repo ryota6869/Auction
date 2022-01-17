@@ -3,6 +3,7 @@ package oit.is.uno.auction.model;
 public class Items {
   int id;
   String name;
+  int num;
 
   public int getId() {
     return id;
@@ -20,4 +21,11 @@ public class Items {
     this.name = name;
   }
 
+  public int getNum() {
+    return num;
+  }
+
+  public void setNum(int num) {
+    this.num = num;
+  }
 }

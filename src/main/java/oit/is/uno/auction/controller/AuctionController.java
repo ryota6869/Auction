@@ -22,6 +22,8 @@ import oit.is.uno.auction.model.ItemMapper;
 import oit.is.uno.auction.model.AuctionInfo;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import oit.is.uno.auction.model.Items;
+import oit.is.uno.auction.model.ResultMapper;
+import oit.is.uno.auction.model.BagMapper;
 import oit.is.uno.auction.model.DateInit;
 
 @Controller
@@ -41,10 +43,17 @@ public class AuctionController {
   AwardsMapper awMapper;
 
   @Autowired
+  ResultMapper rMapper;
+
+  @Autowired
+  BagMapper bMapper;
+
+  @Autowired
   AsyncAuctionService aService;
 
   @GetMapping()
   public String auction(ModelMap model, Principal prin) {
+    int quantity;
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
 
     Date today = new Date(System.currentTimeMillis());
@@ -55,6 +64,7 @@ public class AuctionController {
     for (AuctionInfo aInfo : auctionInfos) {
       Date sqlDate = Date.valueOf(aInfo.getDate());
       if (sqlDate.before(sqlToday) || sqlToday.compareTo(sqlDate) == 0) {
+        int sellerId = uMapper.selectIdByName(aInfo.getSellerName());
         int itemId = iMapper.selectItemIdByName(aInfo.getItemName());
         if (aInfo.getBidderId() != 0) {
           int bidderMoney = uMapper.selectMoneyById(aInfo.getBidderId());
@@ -66,7 +76,18 @@ public class AuctionController {
             uMapper.updMoney(bidderCurrent, name);
             int sellerCurrent = sellerMoney + aInfo.getMaxBid();
             uMapper.updMoney(sellerCurrent, aInfo.getSellerName());
+            quantity = bMapper.selectQuantityOfItem(aInfo.getBidderId(), itemId);
+            bMapper.updQuantity(aInfo.getBidderId(), itemId, quantity + 1);
+            rMapper.insertResult(sellerId, itemId, "成功", date);
+          } else {
+            quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
+            bMapper.updQuantity(sellerId, itemId, quantity + 1);
+            rMapper.insertResult(sellerId, itemId, "失敗", date);
           }
+        } else {
+          quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
+          bMapper.updQuantity(sellerId, itemId, quantity + 1);
+          rMapper.insertResult(sellerId, itemId, "失敗", date);
         }
         aService.syncItemSold(aInfo.getId());
       }
@@ -137,11 +158,17 @@ public class AuctionController {
   }
 
   @GetMapping("/sell")
-  public String sell(ModelMap model) {
-    ArrayList<Items> items = iMapper.selectItems();
+  public String sell(Principal prin, ModelMap model) {
+    int userId = uMapper.selectIdByName(prin.getName());
+    ArrayList<Items> items = iMapper.selectItems(userId);
     model.addAttribute("items", items);
     DateInit date = new DateInit();
     model.addAttribute("today", date.getTomorrowDate());
+    boolean flag = true;
+    if (iMapper.countItems(userId) == 0) {
+      flag = false;
+    }
+    model.addAttribute("possible", flag);
     return "sell.html";
   }
 
@@ -149,6 +176,8 @@ public class AuctionController {
   public String selling(ModelMap model, Principal prin, @RequestParam Integer itemId, @RequestParam String dueDate) {
     int sellerId = uMapper.selectIdByName(prin.getName());
     aService.syncSellItem(sellerId, itemId, dueDate);
+    int quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
+    bMapper.updQuantity(sellerId, itemId, quantity - 1);
     ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
     model.addAttribute("auctionInfos", auctionInfos);
     return "auction.html";

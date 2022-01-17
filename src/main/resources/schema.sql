@@ -25,3 +25,17 @@ CREATE TABLE AWARDS(
   bidderId INT NOT NULL,
   itemId INT NOT NULL
 );
+
+CREATE TABLE RESULTS(
+  id IDENTITY,
+  sellerId INT NOT NULL,
+  itemId INT NOT NULL,
+  result CHAR NOT NULL,
+  date DATE NOT NULL
+);
+
+CREATE TABLE BAG(
+  userId INT NOT NULL,
+  itemId INT NOT NULL,
+  quantity INT
+);
