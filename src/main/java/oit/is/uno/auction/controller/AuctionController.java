@@ -116,8 +116,42 @@ public class AuctionController {
   @GetMapping("/bid/end")
   public String end(@RequestParam Integer auctionId) {
     AuctionInfo newInfo = aMapper.selectById(auctionId);
+    int quantity;
+
+    // System.out.println(newInfo.getBidderId());
+
+    Date today = new Date(System.currentTimeMillis());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = dateFormat.format(today);
+
+    int sellerId = uMapper.selectIdByName(newInfo.getSellerName());
     int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
-    awMapper.insertAward(newInfo.getBidderId(), itemId);
+
+    if (newInfo.getBidderId() != 0) {
+      int bidderMoney = uMapper.selectMoneyById(newInfo.getBidderId());
+      int sellerMoney = uMapper.selectMoneyById(uMapper.selectIdByName(newInfo.getSellerName()));
+      if (bidderMoney >= newInfo.getMaxBid()) {
+        awMapper.insertAward(newInfo.getBidderId(), itemId);
+        String name = uMapper.selectNameById(newInfo.getBidderId());
+        int bidderCurrent = bidderMoney - newInfo.getMaxBid();
+        uMapper.updMoney(bidderCurrent, name);
+        int sellerCurrent = sellerMoney + newInfo.getMaxBid();
+        uMapper.updMoney(sellerCurrent, newInfo.getSellerName());
+        quantity = bMapper.selectQuantityOfItem(newInfo.getBidderId(), itemId);
+        bMapper.updQuantity(newInfo.getBidderId(), itemId, quantity + 1);
+        rMapper.insertResult(sellerId, itemId, "成功", date);
+      } else {
+        // System.out.println("NO MONEY");
+        quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
+        bMapper.updQuantity(sellerId, itemId, quantity + 1);
+        rMapper.insertResult(sellerId, itemId, "失敗", date);
+      }
+    } else {
+      // System.out.println("NO BIDDER");
+      quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
+      bMapper.updQuantity(sellerId, itemId, quantity + 1);
+      rMapper.insertResult(sellerId, itemId, "失敗", date);
+    }
     aService.syncItemSold(auctionId);
     return "auction.html";
   }
