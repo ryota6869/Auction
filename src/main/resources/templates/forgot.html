@@ -4,16 +4,68 @@
 <head>
   <meta charset="UTF-8">
   <title>Forgot</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    div.center {
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      line-height: 3;
+      font-size: 30px;
+    }
+
+    .form_color {
+      background: lightgoldenrodyellow;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/index.html">戻る</a>
+  <a class="link_button" href="/index.html">戻る</a>
   <p>パスワードを忘れましたか？</p>
-  <form method="post">
-    <input type="text" name="name" placeholder="ユーザー名を入力" />
-    <input type="submit" value="検索" formaction="/forgot/pass">
-  </form>
-  <div th:if="${findPass}">
+  <div class="center">
+    <form method="post">
+      <input type="text" name="name" placeholder="ユーザー名を入力" class="form_color" />
+      <input type="submit" value="検索" formaction="/forgot/pass">
+    </form>
+  </div>
+  <div class="center" th:if="${findPass}">
     あなたのパスワードは[[${findPass}]]です
   </div>
 </body>
