@@ -7,7 +7,7 @@
 
 #ユーザーID パスワード一覧
 ---
---ユーザーID:user1 pass:p@ss1  　
---ユーザーID:user2 pass:p@ss2  　
+--ユーザーID:user1 pass:p@ss1  
+--ユーザーID:user2 pass:p@ss2  
 --ユーザーID:user3 pass:p@ss3  
 --ユーザーID:user4 pass:p@ss4  
