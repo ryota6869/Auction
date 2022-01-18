@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,10 +44,16 @@ public class AuctionAuthConfiguration extends WebSecurityConfigurerAdapter {
     // authenticated()の代わりにpermitAll()と書くと認証処理が不要であることを示す
     http.authorizeRequests().antMatchers("/home").authenticated();
 
+    // http.ignoring().antMatchers("/css/**");
+
     // Spring Securityの機能を利用してログアウト．ログアウト時は http://localhost:8000/ に戻る
     http.logout().logoutSuccessUrl("/");
     http.csrf().disable();
     http.headers().frameOptions().disable();
   }
 
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring().antMatchers("/css/**");
+  }
 }

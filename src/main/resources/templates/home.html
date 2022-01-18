@@ -4,19 +4,101 @@
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    div.menu {
+      text-align: center;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    div.right {
+      text-align: right;
+    }
+
+    .bonus {
+      text-align: center;
+      font-size: large;
+    }
+
+    .menu_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 0px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .menu_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .menu_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/logout">ログアウト</a>
-  <p><span sec:authentication="name"></span></p>
+  <a class="link_button" href="/logout">ログアウト</a>
+  <div class="right"><span style="border: solid 2px black;"><span
+        sec:authentication="name"></span></span>　所持金：[[${money}]]</div>
 
-  <div th:if="${bonus}">今日のログインボーナスです！[[${bonus}]]円をもらいました！</div>
-  <p>あなたの所持金は　[[${money}]]</p>
+  <div class="bonus" th:if="${bonus}">今日のログインボーナスです！[[${bonus}]]円をもらいました！</div>
 
-  <a href="/auction">オークション</a><br>
-
-  <a href="/history">購入履歴</a><br>
-  <a href="/result">マイ・オークションの状況</a>
+  <div class="menu">
+    <br><br><br><br>
+    <a class="menu_button" href="/auction">オークション</a><br>
+    <a class="menu_button" href="/history">購入履歴</a><br>
+    <a class="menu_button" href="/result">マイ・オークションの状況</a>
+  </div>
 </body>
 
 </html>
