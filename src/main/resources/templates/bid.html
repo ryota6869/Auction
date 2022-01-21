@@ -4,10 +4,73 @@
 <head>
   <meta charset="UTF-8">
   <title>Bid</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    h1 {
+      border-bottom: dotted 5px skyblue;
+    }
+
+    .form_color {
+      background: lightgoldenrodyellow;
+    }
+
+    .end_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: rgb(57, 57, 252);
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 5px;
+    }
+
+    .end_button:hover {
+      background: skyblue;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/auction">もどる</a>
+  <a class="link_button" href="/auction">もどる</a>
   <h1>Auction [[${auctionInfo.id}]]</h1>
   <h2>[[${auctionInfo.itemName}]]</h2>
   <p>入札期限:[[${auctionInfo.date}]]</p>
@@ -15,11 +78,11 @@
 
   <div sec:authorize="hasRole('ROLE_USER')">
     <span th:if="${seller}">
-      <a th:href="@{/auction/bid/end(auctionId=${auctionInfo.id})}">オークションを終了する</a>
+      <a class="end_button" th:href="@{/auction/bid/end(auctionId=${auctionInfo.id})}">オークションを終了する</a>
     </span>
     <span th:if="${bidder}">
       <form action="/auction/bid/insert" method="post">
-        <input type="number" name="bid" value="0" min="0" />
+        <input class="form_color" type="number" name="bid" value="0" min="0" />
         <input type="hidden" name="role" th:value="user" />
         <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
         <input type="submit" value="入札">
@@ -27,14 +90,14 @@
     </span>
   </div>
 
-  <div sec:authorize="hasRole('ROLE_ADMIN')">
+  <!--<div sec:authorize="hasRole('ROLE_ADMIN')">
     <form action="/auction/bid/insert" method="post">
       <input type="number" name="bid" value="0" min="0" />
       <input type="hidden" name="role" th:value="admin" />
       <input type="hidden" name="auctionId" th:value="${auctionInfo.id}">
       <input type="submit" value="入札">
     </form>
-  </div>
+  </div>-->
 </body>
 
 </html>

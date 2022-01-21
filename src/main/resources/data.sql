@@ -4,9 +4,9 @@ INSERT INTO USERS (name,money,pass,login) VALUES ('user3',0,'p@ss3', '2000-1-1')
 INSERT INTO USERS (name,money,pass,login) VALUES ('user4',0,'p@ss4', '2000-1-1');
 INSERT INTO USERS (name,money,pass,login) VALUES ('teacher',999999,'oit', '2000-1-1');
 
-INSERT INTO ITEMS (name) VALUES ('りんご');
-INSERT INTO ITEMS (name) VALUES ('みかん');
-INSERT INTO ITEMS (name) VALUES ('ぶどう');
+INSERT INTO ITEMS (name) VALUES ('ルビー');
+INSERT INTO ITEMS (name) VALUES ('サファイア');
+INSERT INTO ITEMS (name) VALUES ('エメラルド');
 
 INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 1, 1);
 INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 2, 1);

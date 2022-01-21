@@ -114,7 +114,7 @@ public class AuctionController {
   }
 
   @GetMapping("/bid/end")
-  public String end(@RequestParam Integer auctionId) {
+  public String end(@RequestParam Integer auctionId, ModelMap model) {
     AuctionInfo newInfo = aMapper.selectById(auctionId);
     int quantity;
 
@@ -153,6 +153,8 @@ public class AuctionController {
       rMapper.insertResult(sellerId, itemId, "失敗", date);
     }
     aService.syncItemSold(auctionId);
+    ArrayList<AuctionInfo> aInfos = aService.syncShowAuctionInfos();
+    model.addAttribute("auctionInfos", aInfos);
     return "auction.html";
   }
 

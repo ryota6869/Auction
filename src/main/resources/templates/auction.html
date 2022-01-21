@@ -15,13 +15,12 @@
         for (var i = 0; i < auctionInfos.length; i++) {
           var bgn_tr = "<tr>";
           var end_tr = "</tr>";
-          var idx = "<td>" + auctionInfos[i].id + "</td>";
           var item_name = "<td>" + auctionInfos[i].itemName + "</td>";
           var sellerName = "<td>" + auctionInfos[i].sellerName + "</td>";
           var maxBid = "<td>" + auctionInfos[i].maxBid + "</td>";
           var date = "<td>" + auctionInfos[i].date + "</td>";
-          var f_proc = "<td><a href='/auction/bid?auctionId=" + auctionInfos[i].id + "'>入札</a></td>";
-          auctions_table = auctions_table + bgn_tr + idx + item_name + sellerName + maxBid + date + f_proc + end_tr;
+          var f_proc = "<td class="sample"><a href='/auction/bid?auctionId=" + auctionInfos[i].id + "'>入札</a></td>";
+          auctions_table = auctions_table + bgn_tr + item_name + sellerName + maxBid + date + f_proc + end_tr;
         }
         console.log(auctions_table);
         var tbody = document.getElementById("auctions_list_user");
@@ -29,19 +28,113 @@
       }
     }
   </script>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    h1 {
+      text-align: center;
+      line-height: 1.5;
+      font-size: 50px;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+    }
+
+    table tr {
+      border-bottom: solid 1px skyblue;
+      cursor: pointer;
+    }
+
+    table th {
+      border-top: solid 2px blue;
+      background: linear-gradient(rgb(57, 57, 252), skyblue);
+      color: white;
+      text-align: center;
+      width: 20%;
+      padding: 15px 0;
+    }
+
+    table td {
+      text-align: center;
+      width: 20%;
+      /*padding: 15px 0;*/
+    }
+
+    a:hover {
+      background-color: #d4f0fd;
+    }
+
+    td.sample a {
+      display: block;
+      /* リンクをブロックレベル化して表示 */
+      padding: 0.6em 1em;
+      /* 内側の余白量を上下に0.6文字分＆左右に1文字分にする */
+    }
+
+    div.right {
+      text-align: left;
+    }
+
+    .sell_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: rgb(57, 57, 252);
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/home">もどる</a>
+  <a class="link_button" href="/home">もどる</a>
+  <div class="right"><a class="sell_button" href="/auction/sell">出品</a></div>
   <h1>Auction</h1>
-  <br>
-  <a href="/auction/sell">出品</a>
-  <br>
-  <br>
   <div>
-    <table border="1">
+    <table>
       <thead>
-        <th>ID</th>
         <th>アイテム名</th>
         <th>出品者</th>
         <th>最高入札額</th>
@@ -51,12 +144,11 @@
       <tbody id="auctions_list_user">
         <span th:if="${auctionInfos}">
           <tr th:each="info, stat:${auctionInfos}">
-            <td>[[${info.id}]]</td>
             <td>[[${info.itemName}]]</td>
             <td>[[${info.sellerName}]]</td>
             <td>[[${info.maxBid}]]</td>
             <td>[[${info.date}]]</td>
-            <td>
+            <td class="sample">
               <a th:href="@{/auction/bid(auctionId=${info.id})}">入札</a>
             </td>
           </tr>
