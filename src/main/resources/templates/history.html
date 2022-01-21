@@ -4,19 +4,80 @@
 <head>
   <meta charset="UTF-8">
   <title>History</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    h1 {
+      text-align: center;
+      line-height: 3;
+      font-size: 50px;
+    }
+
+    .design10 {
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    .design10 th {
+      padding: 10px;
+      border-bottom: solid 4px #778ca3;
+      color: #778ca3
+    }
+
+    .design10 td {
+      padding: 10px;
+      border-bottom: solid 1px #778ca3;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/home">戻る</a>
+  <a class="link_button" href="/home">戻る</a>
   <h1>購入履歴</h1>
-  <table border="1">
+  <table class="design10">
     <thead>
-      <th>id</th>
-      <th>item name</th>
+      <th width="20%">ID</th>
+      <th>商品名</th>
     </thead>
     <tbody th:if="${awards}">
       <tr th:each="aw,stat:${awards}">
-        <td>[[${aw.id}]]</td>
+        <td th:text="${stat.count}"></td>
         <td>[[${aw.item}]]</td>
       </tr>
     </tbody>

@@ -4,21 +4,112 @@
 <head>
   <meta charset="UTF-8">
   <title>Results</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    h1 {
+      text-align: center;
+      line-height: 3;
+      font-size: 50px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 20px;
+    }
+
+    table th:first-child {
+      border-radius: 5px 0 0 0;
+    }
+
+    table th:last-child {
+      border-radius: 0 5px 0 0;
+      border-right: 1px solid #3c6690;
+    }
+
+    table th {
+      text-align: center;
+      color: white;
+      background: linear-gradient(hsla(210, 35%, 81%, 0.658), skyblue);
+      border-left: 1px solid #3c6690;
+      border-top: 1px solid #3c6690;
+      border-bottom: 1px solid #3c6690;
+      box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+      width: 25%;
+      padding: 10px 0;
+    }
+
+    table td {
+      text-align: center;
+      border-left: 1px solid #a8b7c5;
+      border-bottom: 1px solid #a8b7c5;
+      border-top: none;
+      box-shadow: 0px -3px 5px 1px #eee inset;
+      width: 25%;
+      padding: 10px 0;
+    }
+
+    table td:last-child {
+      border-right: 1px solid #a8b7c5;
+    }
+
+    table tr:last-child td:first-child {
+      border-radius: 0 0 0 5px;
+    }
+
+    table tr:last-child td:last-child {
+      border-radius: 0 0 5px 0;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/home">戻る</a>
+  <a class="link_button" href="/home">戻る</a>
   <h1>オークション結果</h1>
-  <table border="1">
+  <table>
     <thead>
-      <th>ID</th>
+      <th>日付</th>
       <th>商品名</th>
       <th>結果</th>
-      <th>日付</th>
     </thead>
     <tbody th:if="${results}">
       <tr th:each="res,stat:${results}">
-        <td th:text="${stat.count}"></td>
+        <td>[[${res.date}]]</td>
         <td>[[${res.item}]]</td>
         <td th:if="${res.result} == 成功">
           [[${res.result}]]
@@ -26,7 +117,6 @@
         <td th:if="${res.result} == 失敗" bgcolor="#ff0000">
           [[${res.result}]]
         </td>
-        <td>[[${res.date}]]</td>
       </tr>
     </tbody>
   </table>

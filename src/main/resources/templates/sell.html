@@ -4,16 +4,65 @@
 <head>
   <meta charset="UTF-8">
   <title>Sell</title>
+  <style>
+    body {
+      background-color: #f0e68c;
+    }
+
+    .link_button {
+      line-height: 3;
+      font-weight: bold;
+      /*太字に*/
+      text-decoration: none;
+      /*下線消す*/
+      background: skyblue;
+      /*背景を水色に*/
+      color: white;
+      /*文字を白に*/
+      padding: 5px 10px;
+      /*内側の余白*/
+      border-radius: 20px;
+      /*角を丸くする*/
+      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
+    }
+
+    /*以下カーソルを当てたとき*/
+    .link_button:hover {
+      background: silver;
+      /*背景色をシルバーに*/
+      text-decoration: none;
+      /*下線を消す*/
+    }
+
+    /*以下訪問済みのデザイン*/
+    .link_button:visited {
+      color: gray;
+      /*文字をグレイに*/
+    }
+
+    .form_color {
+      background: lightgoldenrodyellow;
+      font-size: 15px;
+    }
+
+    form {
+      font-size: 20px;
+    }
+
+    p {
+      border-top: dotted 5px skyblue;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="/auction">キャンセル</a>
-  <br>
+  <a class="link_button" href="/auction">キャンセル</a>
+  <br><br>
   <div th:if="${items}">
     <form method="post" action="/auction/selling">
-      <label for="due">入札期限</label>
-      <input type="date" id="due" name="dueDate" th:value="${today}">
-      <p>出品する商品</p>
+      <label style="font-size: 25px;" for="due">入札期限</label><br>
+      <input class="form_color" type="date" id="due" name="dueDate" th:value="${today}" th:min="${today}">
+      <p style="font-size: 25px;">出品する商品</p>
       <div th:each="item, stat:${items}">
         <span th:if="${item.num == 1}">
           <input type="radio" th:id="${item.id}" name="itemId" th:value="${item.id}" checked>
@@ -24,7 +73,7 @@
 
         <label th:for="${item.id}">[[${item.name}]]</label>
       </div>
-      <span th:if="${possible}"><input type="submit" value="決定"></span>
+      <span th:if="${possible}"><input style="font-size: 15px;" type="submit" value="決定"></span>
 
     </form>
   </div>
