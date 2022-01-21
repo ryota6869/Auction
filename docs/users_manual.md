@@ -1,12 +1,18 @@
 # オークションWEBアプリケーション ユーザーマニュアル
 ## 目次
-- [サイトアクセス](#access)
+<details> 
+<summary>目次(クリックで表示)</summary>
+  
+- [サイトアクセスとログイン](#access)
 - [オークションで入札をする](#auctionBid)
 - [オークションで出品する](#auctionSell)
 - [購入履歴を見る](#sellResult)
 - [出品したオークションの結果を見る](#auctionResult)
 - [ユーザーID パスワード一覧](#pass)
 - [パスワードの確認](#checkPass)  
+  
+ </details>
+ 
 <br>
 
 <a id="access"></a>
