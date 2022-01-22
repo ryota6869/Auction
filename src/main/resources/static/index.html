@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 
 <head>
   <meta charset="UTF-8">
   <title>Auction</title>
-  <!--<link rel="stylesheet" th:href="@{css/style.css}" type="text/css">-->
   <style>
     body {
       background-color: #f0e68c;
     }
 
-    .headline {
+    h1 {
       text-align: center;
-      line-height: 5;
+      line-height: 2.5;
       letter-spacing: 0.25em;
       font-size: 5em;
+    }
+
+    h2 {
+      text-align: center;
+      line-height: 1;
+      letter-spacing: 7.5px;
+      font-size: 1.75em;
     }
 
     div.center {
@@ -24,40 +29,32 @@
     .link_button {
       line-height: 3;
       font-weight: bold;
-      /*太字に*/
       text-decoration: none;
-      /*下線消す*/
       background: skyblue;
-      /*背景を水色に*/
       color: white;
-      /*文字を白に*/
       padding: 5px 10px;
-      /*内側の余白*/
       border-radius: 20px;
-      /*角を丸くする*/
-      /*font-family: 'Avenir','Arial';フォントをいい感じに*/
     }
 
-    /*以下カーソルを当てたとき*/
     .link_button:hover {
       background: silver;
-      /*背景色をシルバーに*/
       text-decoration: none;
-      /*下線を消す*/
     }
 
-    /*以下訪問済みのデザイン*/
     .link_button:visited {
       color: gray;
-      /*文字をグレイに*/
     }
   </style>
 </head>
 
 <body>
-  <h1 class="headline">ようこそ！</h1>
+  <br><br><br>
+  <h1>ようこそ！</h1>
+  <h2>「Auction」へ</h2>
   <div class="center"><a class="link_button" href="/home">ログイン</a></div>
   <div class="center"><a href="/forgot">パスワードを忘れた場合はこちら</a></div>
+  <br><br><br><br><br><br><br>
+  <address>By Team UNO</address>
 </body>
 
 </html>

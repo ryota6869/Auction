@@ -3,14 +3,12 @@ package oit.is.uno.auction.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.security.Principal;
-//import java.util.Date;
 import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,8 +116,6 @@ public class AuctionController {
     AuctionInfo newInfo = aMapper.selectById(auctionId);
     int quantity;
 
-    // System.out.println(newInfo.getBidderId());
-
     Date today = new Date(System.currentTimeMillis());
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String date = dateFormat.format(today);
@@ -141,13 +137,11 @@ public class AuctionController {
         bMapper.updQuantity(newInfo.getBidderId(), itemId, quantity + 1);
         rMapper.insertResult(sellerId, itemId, "成功", date);
       } else {
-        // System.out.println("NO MONEY");
         quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
         bMapper.updQuantity(sellerId, itemId, quantity + 1);
         rMapper.insertResult(sellerId, itemId, "失敗", date);
       }
     } else {
-      // System.out.println("NO BIDDER");
       quantity = bMapper.selectQuantityOfItem(sellerId, itemId);
       bMapper.updQuantity(sellerId, itemId, quantity + 1);
       rMapper.insertResult(sellerId, itemId, "失敗", date);
@@ -159,8 +153,7 @@ public class AuctionController {
   }
 
   @PostMapping("/bid/insert")
-  public String insert(@RequestParam Integer bid, @RequestParam String role, @RequestParam Integer auctionId,
-      ModelMap model, Principal prin) {
+  public String insert(@RequestParam Integer bid, @RequestParam Integer auctionId, ModelMap model, Principal prin) {
     int userId = uMapper.selectIdByName(prin.getName());
     model.addAttribute("userId", userId);
     AuctionInfo newInfo = aMapper.selectById(auctionId);
@@ -168,17 +161,6 @@ public class AuctionController {
     if (newInfo.getMaxBid() < bid) {
       aService.syncChangeWinner(auctionId, bid, userId);
     }
-
-    // Debug: teacherで即時に落札するための処理（落札処理の確認）
-    if (role.equals("admin")) {
-      int itemId = iMapper.selectItemIdByName(newInfo.getItemName());
-      awMapper.insertAward(uMapper.selectIdByName("teacher"), itemId);
-      aService.syncItemSold(newInfo.getId());
-      ArrayList<AuctionInfo> auctionInfos = aService.syncShowAuctionInfos();
-      model.addAttribute("auctionInfos", auctionInfos);
-      return "auction.html";
-    }
-    // ここまで
 
     newInfo = aMapper.selectById(auctionId);
     model.addAttribute("auctionInfo", newInfo);

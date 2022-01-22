@@ -47,8 +47,7 @@ public class AsyncAuctionService {
   public void asyncShowAuctionInfos(SseEmitter emitter) {
     dbUpdated = true;
     try {
-      while (true) {// 無限ループ
-        // DBが更新されていなければ0.5s休み
+      while (true) {
         if (false == dbUpdated) {
           TimeUnit.MILLISECONDS.sleep(500);
           continue;
@@ -59,7 +58,6 @@ public class AsyncAuctionService {
         dbUpdated = false;
       }
     } catch (Exception e) {
-      // 例外の名前とメッセージだけ表示する
       logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     } finally {
       emitter.complete();
