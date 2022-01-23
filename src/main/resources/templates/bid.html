@@ -56,6 +56,15 @@
   <a class="link_button" href="/auction">もどる</a>
   <h1>Auction [[${auctionInfo.id}]]</h1>
   <h2>[[${auctionInfo.itemName}]]</h2>
+  <div th:if="${auctionInfo.itemName} == ルビー">
+    <img src="/ruby.png" height="100">
+  </div>
+  <div th:if="${auctionInfo.itemName} == サファイア">
+    <img src="/sapphire.png" height="100">
+  </div>
+  <div th:if="${auctionInfo.itemName} == エメラルド">
+    <img src="/emerald.png" height="100">
+  </div>
   <p>入札期限:[[${auctionInfo.date}]]</p>
   <p>最高入札額:[[${auctionInfo.maxBid}]]</p>
 

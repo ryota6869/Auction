@@ -8,28 +8,23 @@ INSERT INTO ITEMS (name) VALUES ('ルビー');
 INSERT INTO ITEMS (name) VALUES ('サファイア');
 INSERT INTO ITEMS (name) VALUES ('エメラルド');
 
-INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 1, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 2, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 3, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 1, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 2, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 3, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 1, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 2, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 3, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 1, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 2, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 3, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 1, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 2, 1);
-INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 3, 1);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 1, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 2, 2);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (1, 3, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 1, 2);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 2, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (2, 3, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 1, 2);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 2, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (3, 3, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 1, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 2, 2);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (4, 3, 3);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 1, 0);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 2, 0);
+INSERT INTO BAG (userId, itemId, quantity) VALUES (5, 3, 0);
 
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 3, 1122, '2022-12-12',1);
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date) VALUES (3, 1, NULL, '2021-12-13');
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (3, 1, NULL, '2022-12-13',2);
-
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 3, 1000, '2022-1-1',1);
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 3, 10000, '2022-1-1',1);
-
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 1, 2000, '2022-1-1',3);
-INSERT INTO AUCTION (itemId, sellerId, maxBid, date, bidderId) VALUES (2, 1, 100000, '2022-1-1',3);
+INSERT INTO AUCTION (ITEMID, SELLERID, MAXBID, DATE) VALUES (2, 4, NULL, '2022-1-31');
+INSERT INTO AUCTION (ITEMID, SELLERID, MAXBID, DATE) VALUES (1, 3, NULL, '2022-1-31');
+INSERT INTO AUCTION (ITEMID, SELLERID, MAXBID, DATE) VALUES (1, 2, NULL, '2022-2-8');
+INSERT INTO AUCTION (ITEMID, SELLERID, MAXBID, DATE) VALUES (2, 1, NULL, '2022-2-8');
